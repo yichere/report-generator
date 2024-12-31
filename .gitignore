@@ -1,0 +1,4 @@
+*jpg
+dist/
+__pycache__/
+*.bat

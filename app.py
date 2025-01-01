@@ -20,7 +20,7 @@ class Request(BaseModel):
     """ 标题下方文本，最好为英文"""
     base64:str
     """人物立绘的 base64 编码"""
-    color_deep:int
+    color_deep:float
     """标题照比 main_color 深浅的程度，1 为最浅，0 为最深，推荐设置为 0.8"""
     fish_pic:str
     """摸鱼日历的图标路径"""

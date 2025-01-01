@@ -471,7 +471,7 @@ def generate_one_image(data:dict,color,path='./assests/image/one.png'):
     string = insert_newline(data['hitokoto'],25)
 
     background = add_text_to_image_with_font(background,string,(20,50),'./font/SSFangTangTi.ttf',30,color)
-    background = add_text_to_image_with_font(background,f'--{data['from']}',(350,80),'./font/NotoSansSC-Regular.otf',20,color)
+    background = add_text_to_image_with_font(background,f"--{data['from']}",(350,80),'./font/NotoSansSC-Regular.otf',20,color)
     return background
 
 def generate_card(data:dict,color):

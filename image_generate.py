@@ -322,7 +322,7 @@ def convert_b64(b64, target_size=None):
 
     return image_array
 
-def generate_bili_image(data:dict = Body(...) ,  color=None,path='./assest/image/bili.png'):
+def generate_bili_image(data:dict = Body(...) ,  color=None,path='./assests/image/bili.png'):
     """生成 bili 的图片"""
     background = generate_template_background(250,400,color)
 
@@ -453,7 +453,7 @@ def insert_newline(text, max_length):
         return text[:max_length] + '\n\n' + (12-len(text[max_length:]))*" "+ text[max_length:]
     return text
 
-def generate_one_image(data:dict,color,path):
+def generate_one_image(data:dict,color,path='./assests/image/one.png'):
     background = generate_template_background(480,120,color)
 
     temp = np.zeros((40,150,4), dtype=np.uint8)

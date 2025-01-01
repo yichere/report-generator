@@ -1,12 +1,13 @@
 import hashlib
 import json
 import cv2
-from fastapi import Body, FastAPI, HTTPException, Response,requests
+from fastapi import Body, FastAPI, HTTPException, Response
 from datetime import datetime,date
 import httpx
 import image_generate
 import pathlib as path
 from pydantic import BaseModel
+import requests
 
 app = FastAPI()
 
@@ -295,11 +296,11 @@ async def generate_image(data: Request):
 
     image = image_generate.overlay_image(background, test, (290, 900))
     
-    person = image_generate.convert_b64(personb64,(175,175))
+    person = image_generate.convert_b64(personb64 if data.base64 == "" else data.base64,(175,175))
 
     image = image_generate.overlay_image(image,person,(100,100))
     
-    he = darken_color(color,data.color_deep)
+    he = darken_color(data.color,data.color_deep)
 
     image = image_generate.add_text_to_image_with_font(image,data.headText,(170,60),'./font/SSFangTangTi.ttf',70,hex_to_bgr(he))
 
@@ -329,7 +330,8 @@ async def generate_image(data: Request):
     image = image_generate.overlay_image(image,image_anime,(290,1450))
 
     image = image_generate.overlay_image(image,image_one,(290,1800))
-
+    
+    image =cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
     return  {
         'img':image_generate.numpy_to_base64(image)
     }

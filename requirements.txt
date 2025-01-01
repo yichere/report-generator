@@ -5,3 +5,4 @@ uvicorn
 httpx
 Pillow
 pydantic
+requests

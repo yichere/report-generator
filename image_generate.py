@@ -478,17 +478,17 @@ def generate_card(data:dict,color):
     card = np.zeros((120,140,4), dtype=np.uint8)
 
     convert = {
-        0:"一",
-        1:"二",
-        2:"三",
-        3:"四",
-        4:"五",
-        5:"六",
-        6:"日"
+        0:"星期一",
+        1:"星期二",
+        2:"星期三",
+        3:"星期四",
+        4:"星期五",
+        5:"星期六",
+        6:"星期日"
     }
     
     week = convert[data['week']]
-    card = add_text_to_image_with_font(card,week,(50,5),'./font/SSFangTangTi.ttf',50,color)
+    card = add_text_to_image_with_font(card,week,(10,5),'./font/SSFangTangTi.ttf',50,color)
     card = add_text_to_image_with_font(card,data['date'],(10,70),'./font/SSFangTangTi.ttf',20,color)
     return card
 

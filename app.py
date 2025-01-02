@@ -319,7 +319,7 @@ async def generate_image(data: Request):
         'date':date.today().strftime("%Y年%m月%d日"),
     }
 
-    image_card = image_generate.generate_card(t,hex_to_bgr("#66ccff"))
+    image_card = image_generate.generate_card(t,color)
 
     image = image_generate.overlay_image(image,image_card,(480,120))
 

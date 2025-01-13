@@ -1,13 +1,17 @@
 import hashlib
 import json
+import os
 import cv2
-from fastapi import Body, FastAPI, HTTPException, Response
+from fastapi import Body, FastAPI, File, HTTPException, Response, UploadFile
 from datetime import datetime,date
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 import httpx
 import image_generate
 import pathlib as path
 from pydantic import BaseModel
 import requests
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
@@ -282,7 +286,28 @@ def hex_to_bgr(hex_color):
     g = int(hex_color[2:4], 16)
     b = int(hex_color[4:6], 16)
     return (b, g, r)
+app.mount("/", StaticFiles(directory="assests/static" , html=True), name="static")
+app.mount("/assests", StaticFiles(directory="assests"), name="assests")
 
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png"}
+
+@app.post("/upload/")
+async def upload_image(file: UploadFile = File(...)):
+    # 检查文件类型
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=400, detail="仅支持上传图片文件（JPEG, PNG, GIF）",status ="false")
+
+    # 保存文件到 uploads 目录
+    file_path = os.path.join("assests/image", file.filename)
+    with open(file_path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    return JSONResponse({
+        "message": "文件上传成功",
+        "filename": file.filename,
+        "file_url": f"/uploads/{file.filename}",
+        "status":"ok"
+    })
 
 @app.post("/generate_image")
 async def generate_image(data: Request):
@@ -335,6 +360,19 @@ async def generate_image(data: Request):
     return  {
         'img':image_generate.numpy_to_base64(image)
     }
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 允许所有来源
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许所有 HTTP 方法
+    allow_headers=["*"],  # 允许所有 HTTP 头
+)
+
+@app.get("/images/")
+async def list_images():
+    # 列出所有上传的图片
+    images = os.listdir("assests/image")
+    return {"images": images}
 
 @app.get("/test")
 async def test():

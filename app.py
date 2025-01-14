@@ -286,7 +286,7 @@ def hex_to_bgr(hex_color):
     g = int(hex_color[2:4], 16)
     b = int(hex_color[4:6], 16)
     return (b, g, r)
-app.mount("/", StaticFiles(directory="assests/static" , html=True), name="static")
+app.mount("/static", StaticFiles(directory="static" , html=True), name="static")
 app.mount("/assests", StaticFiles(directory="assests"), name="assests")
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png"}

@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import base64
 import io
+import math
 
 def hex_to_bgr(hex_color):
     hex_color = hex_color.lstrip("#")
@@ -449,9 +450,13 @@ def insert_newline(text, max_length):
     返回:
         str: 处理后的字符串。
     """
-    if len(text) > max_length:
-        return text[:max_length] + '\n\n' + (12-len(text[max_length:]))*" "+ text[max_length:]
-    return text
+    fortimes =  math.ceil(text.__len__()/max_length)
+    
+    newstr = ''
+    for i in range(fortimes):
+        newstr += text[i*max_length:(i+1)*max_length] + '\n\n'
+
+    return newstr
 
 def generate_one_image(data:dict,color,path='./assests/image/one.png'):
     background = generate_template_background(480,120,color)
@@ -460,10 +465,12 @@ def generate_one_image(data:dict,color,path='./assests/image/one.png'):
 
     coner = add_text_to_image_with_font(temp,"每日一言",(40,10),'./font/NotoSansSC-Bold.otf',15,color)
 
-    image = Image.open(path).convert("RGBA")
+    if path=='./assests/image/one.png':
 
-    image = np.array(image)
-    image = cv2.cvtColor(image, cv2.COLOR_RGBA2BGRA)
+        image = Image.open(path).convert("RGBA")
+
+        image = np.array(image)
+        image = cv2.cvtColor(image, cv2.COLOR_RGBA2BGRA)
 
     coner = overlay_image(coner,image,(20,20))
     background = overlay_image(background,coner,(240,30))

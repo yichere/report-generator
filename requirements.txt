@@ -6,3 +6,4 @@ httpx
 Pillow
 pydantic
 requests
+python-multipart
